@@ -12,7 +12,7 @@
   outputs = { self, nixpkgs, ... }@inputs:
     let
       globalModules = [
-        ./modules/nixos/common
+        ./modules/nixos/common.nix
       ];
     in {
       nixosConfigurations = {
