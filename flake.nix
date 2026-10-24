@@ -18,7 +18,7 @@
       nixosConfigurations = {
         seraphindisguise = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = globalModules ++ [
+          modules = [
             ./hosts/seraphindisguise/configuration.nix
             inputs.home-manager.nixosModules.default
           ];

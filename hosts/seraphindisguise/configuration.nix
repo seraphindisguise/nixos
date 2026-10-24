@@ -3,7 +3,7 @@
 {
   imports = 
     [
-
+      ../../modules/nixos/steam.nix
     ];
 
   # Boot
@@ -43,6 +43,7 @@
 
   # Nix
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpjgs.config.allowUnfree = true;
 
   # Networking 
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
@@ -58,4 +59,42 @@
     pulse.enable = true;
     jack.enable = true;
   };
+
+  # User
+  users.users."seraphindisguise" = {
+    isNormalUser = true;
+    description = "Teratoma";
+    extraGroups = [ "networkmanager" "wheel" "dialout" "docker" ];
+  };
+  nix.settings.trusted-users = [ "root" "seraphindisguise" ];
+
+  # Home Manager
+  home-manager = {
+    backupFileExtension = "backup";
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      "seraphindisguise" = import ./home.nix;
+    };
+  };
+
+  # Desktop 
+  services.xserver.enable = true;
+  services.xserver.desktopManager.cinnamon.enable = true;
+  services.displayManager.lightdm.enable = true;
+  
+  # Environment 
+  environment.systemPackages = with pkgs; [
+    zip
+    unzip
+    wget
+    git
+    curl 
+    fastfetch
+    silver-searcher
+    lsof
+    file
+    tree
+  ];
+
+  system.stateVersion = "26.05"; # Did you read the comment?
 }
